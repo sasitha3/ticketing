@@ -5,6 +5,9 @@
  */
 package ticketing;
 
+import ticketing.connections.SerialConnenction;
+import ticketing.ui.login;
+
 /**
  *
  * @author Sasitha
@@ -15,7 +18,9 @@ public class Ticketing {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        login log = new login();
+        log.setVisible(true);
+        
     }
     
 }
