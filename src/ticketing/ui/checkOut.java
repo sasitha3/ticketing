@@ -7,13 +7,16 @@ package ticketing.ui;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.ArrayList;
 import javax.swing.JFrame;
+import ticketing.dao.CheckDaoImpl;
+import ticketing.interfaces.CheckDAO;
 
 /**
  *
  * @author Sasitha
  */
-public class checkOut extends javax.swing.JFrame {
+public final class checkOut extends javax.swing.JFrame {
 
     /**
      * Creates new form checkOut
@@ -23,8 +26,19 @@ public class checkOut extends javax.swing.JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setLayout(new GridBagLayout());
         add(outPanel, new GridBagConstraints());
+        loadAllStations();
     }
 
+    
+    void loadAllStations() {
+        CheckDAO check = new CheckDaoImpl();
+        ArrayList<String> list = new ArrayList<String>();
+        list = check.getAllStations();
+        for (int i = 0; i < list.size(); i++) {
+            cmbxStation.addItem((String) list.get(i));
+        }
+
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -42,13 +56,13 @@ public class checkOut extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         location2 = new javax.swing.JTextField();
         location1 = new javax.swing.JTextField();
-        location3 = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         location4 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
+        cmbxStation = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -85,15 +99,16 @@ public class checkOut extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel6.setText("TOTAL COST                 :");
 
+        location2.setEditable(false);
         location2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
+        location1.setEditable(false);
         location1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-
-        location3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel7.setText("AVAILABLE BALANCE :");
 
+        location4.setEditable(false);
         location4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         jButton1.setBackground(new java.awt.Color(255, 255, 255));
@@ -135,10 +150,10 @@ public class checkOut extends javax.swing.JFrame {
                                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(62, 62, 62)
-                                .addGroup(outPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(location3, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(location1, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(location2, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(outPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(location1, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
+                                    .addComponent(location2, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
+                                    .addComponent(cmbxStation, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGroup(outPanelLayout.createSequentialGroup()
                                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(64, 64, 64)
@@ -163,13 +178,15 @@ public class checkOut extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
                 .addGroup(outPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, outPanelLayout.createSequentialGroup()
-                        .addGroup(outPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(location3, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(outPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(outPanelLayout.createSequentialGroup()
+                                .addComponent(cmbxStation, javax.swing.GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE)
+                                .addGap(2, 2, 2))
                             .addComponent(jLabel2))
-                        .addGap(22, 22, 22)
+                        .addGap(23, 23, 23)
                         .addGroup(outPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
                             .addComponent(location1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -245,6 +262,7 @@ public class checkOut extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> cmbxStation;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
@@ -257,7 +275,6 @@ public class checkOut extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JTextField location1;
     private javax.swing.JTextField location2;
-    private javax.swing.JTextField location3;
     private javax.swing.JTextField location4;
     private javax.swing.JPanel outPanel;
     // End of variables declaration//GEN-END:variables

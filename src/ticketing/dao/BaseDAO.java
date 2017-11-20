@@ -7,21 +7,14 @@ import ticketing.connections.MysqlDbConnManager;
 
 public class BaseDAO {
 	
-	private Connection connection = null;
-
-	public BaseDAO() {
-		this.connection = MysqlDbConnManager.MANAGER.getConnection();
-	}
-
 	public Connection getConnection() {
-		return this.connection;
+		return MysqlDbConnManager.MANAGER.getConnection();
 	}
 	
 	public void closeConnection(Connection conn) {
 		try {
 			conn.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

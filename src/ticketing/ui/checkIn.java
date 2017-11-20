@@ -84,7 +84,7 @@ public class checkIn extends javax.swing.JFrame {
         jLabel4.setText("AVAILABLE BALANCE :");
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel5.setText("CUTTENR LOCATION :");
+        jLabel5.setText("CURRENT STATION    :");
 
         location1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
