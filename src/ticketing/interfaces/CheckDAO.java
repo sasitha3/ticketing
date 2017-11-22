@@ -6,6 +6,7 @@
 package ticketing.interfaces;
 
 import java.util.ArrayList;
+import ticketing.model.CheckedDet;
 import ticketing.model.Trip;
 
 /**
@@ -32,7 +33,7 @@ public interface CheckDAO {
      * @param smartId
      * @return 
      */
-    public double getPasangerData(int smartId);
+    public CheckedDet getPasangerData(String smartId);
     
     /**
      * 
@@ -49,5 +50,10 @@ public interface CheckDAO {
      */
     public boolean updateAmount(double cost, int accountId);
     
-    
+    /**
+     * 
+     * @param station
+     * @return 
+     */
+    public int getStationID(String station);
 }

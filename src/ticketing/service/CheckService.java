@@ -5,9 +5,13 @@
  */
 package ticketing.service;
 
+import java.util.Date;
+import ticketing.calc.DistanceCalc;
 import ticketing.dao.CheckDaoImpl;
 import ticketing.interfaces.CheckDAO;
+import ticketing.model.CheckedDet;
 import ticketing.model.StationUser;
+import ticketing.model.Trip;
 
 /**
  *
@@ -17,8 +21,71 @@ public class CheckService {
     
     public static StationUser userDetails;
     
+    /**
+     * 
+     * @return 
+     */
     public String getCurrentStation(){
         CheckDAO check = new CheckDaoImpl();
         return check.getStation(userDetails.getStationId());
     }
+    
+    /**
+     * 
+     * @param sId
+     * @return 
+     */
+    public CheckedDet validateCard(String sId){
+        CheckedDet check = null;
+        CheckDAO getPas = new CheckDaoImpl();
+        check = getPas.getPasangerData(sId);
+        return check;
+    }
+    
+    /**
+     * 
+     * @param trip
+     * @param balance
+     * @return 
+     */
+    public boolean verifyTrip(Trip trip, double balance){
+        Date date = new Date();
+        
+        CheckDAO verify = new CheckDaoImpl();
+        trip.setCurrent(userDetails.getStationId());
+//        trip.setDate(date);
+        
+//        verify.addTrip(trip);
+//        verify.updateAmount(balance, 1);
+        return true;
+    }
+    
+    /**
+     * 
+     * @param station
+     * @return 
+     */
+    public int getStationId(String station){
+        CheckDAO check = new CheckDaoImpl();
+        return check.getStationID(station);
+    }
+    
+    /**
+     * 
+     * @param destination
+     * @return 
+     */
+    public int getDistance(String destination){
+        return DistanceCalc.getDistance(userDetails.getStationId(), getStationId(destination));
+    }
+    
+    /**
+     * 
+     * @param destination
+     * @return 
+     */
+    public double getCost(String destination){
+        return DistanceCalc.getCost(userDetails.getStationId(), getStationId(destination));
+    }
+    
 }
