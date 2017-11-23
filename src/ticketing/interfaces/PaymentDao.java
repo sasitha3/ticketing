@@ -5,10 +5,17 @@
  */
 package ticketing.interfaces;
 
+import ticketing.model.Payment;
+
 /**
  *
  * @author nadika
  */
-public class PaymentDao {
-    
+public interface PaymentDao {
+    public String  loadInvoice();
+    public int checkValidSmartCard(String smartID);
+    public int addPayment(Payment pay);
+    public int updateAccount(String smartID,double amount);
+    public String fillPassenger(String smartID);
 }
+
