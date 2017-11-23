@@ -3,15 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Sasitha/Documents/NetBeansProjects/Ticketing/src/ticketing/model/Trip.java</file>
-            <file>file:/C:/Users/Sasitha/Documents/NetBeansProjects/Ticketing/src/ticketing/model/CheckedDet.java</file>
             <file>file:/C:/Users/Sasitha/Documents/NetBeansProjects/Ticketing/src/ticketing/ui/checkIn.java</file>
-            <file>file:/C:/Users/Sasitha/Documents/NetBeansProjects/Ticketing/src/ticketing/dao/UserDaoImpl.java</file>
-            <file>file:/C:/Users/Sasitha/Documents/NetBeansProjects/Ticketing/src/ticketing/service/CheckService.java</file>
-            <file>file:/C:/Users/Sasitha/Documents/NetBeansProjects/Ticketing/src/ticketing/dao/CheckDaoImpl.java</file>
-            <file>file:/C:/Users/Sasitha/Documents/NetBeansProjects/Ticketing/src/ticketing/interfaces/CheckDAO.java</file>
-            <file>file:/C:/Users/Sasitha/Documents/NetBeansProjects/Ticketing/src/ticketing/connections/SerialConnenction.java</file>
-            <file>file:/C:/Users/Sasitha/Documents/NetBeansProjects/Ticketing/src/ticketing/calc/DistanceCalc.java</file>
+            <file>file:/C:/Users/Sasitha/Documents/NetBeansProjects/Ticketing/src/ticketing/Ticketing.java</file>
+            <file>file:/C:/Users/Sasitha/Documents/NetBeansProjects/Ticketing/src/ticketing/ui/home.java</file>
             <file>file:/C:/Users/Sasitha/Documents/NetBeansProjects/Ticketing/src/ticketing/ui/checkOut.java</file>
             <file>file:/C:/Users/Sasitha/Documents/NetBeansProjects/Ticketing/src/ticketing/ui/login.java</file>
         </group>
