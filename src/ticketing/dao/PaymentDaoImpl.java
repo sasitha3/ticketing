@@ -63,8 +63,9 @@ public class PaymentDaoImpl extends BaseDAO implements PaymentDao {
                     return 0;
                 }//the smart ID 
             }
+          //  System.out.println(rs.getString(1));
             return 1;//the smart card id does not provided already exists in the db
-
+ 
         } catch (Exception e) {
             System.out.println(e);
             return 2;
