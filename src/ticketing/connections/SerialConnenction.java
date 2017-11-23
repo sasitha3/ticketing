@@ -9,13 +9,17 @@ import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
+import java.awt.HeadlessException;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.Enumeration;
+import javax.swing.JOptionPane;
+import ticketing.model.CheckedDet;
+import ticketing.service.CheckService;
 import ticketing.ui.checkIn;
 import ticketing.ui.home;
-import ticketing.ui.login;
 
 /**
  *
@@ -24,12 +28,13 @@ import ticketing.ui.login;
 public class SerialConnenction implements SerialPortEventListener {
 
     home hm = null;
-    checkIn in = new checkIn();
+    checkIn in = null;
+    CheckService service = new CheckService();
     SerialPort serialPort;
     /**
      * The port we're normally going to use.
      */
-    
+
     /**
      * A BufferedReader which will be fed by a InputStreamReader converting the
      * bytes into characters making the displayed results codepage independent
@@ -47,10 +52,11 @@ public class SerialConnenction implements SerialPortEventListener {
      * Default bits per second for COM port.
      */
     private static final int DATA_RATE = 9600;
-    
-    public SerialConnenction(home hom){
+
+    public SerialConnenction(home hom) {
         this.hm = hom;
     }
+
     public void initialize() {
         // the next line is for Raspberry Pi and 
         // gets us into the while loop and was suggested here was suggested http://www.raspberrypi.org/phpBB3/viewtopic.php?f=81&t=32186
@@ -113,23 +119,33 @@ public class SerialConnenction implements SerialPortEventListener {
 
     /**
      * Handle an event on the serial port. Read the data and print it.
+     * @param oEvent
      */
+    @Override
     public synchronized void serialEvent(SerialPortEvent oEvent) {
         if (oEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
             try {
                 String inputLine = input.readLine();
                 System.out.println(inputLine);
-                hm.dispose();
-                
-                in.setVisible(true);
-                
-            } catch (Exception e) {
+                CheckedDet checkin = service.validateCard(inputLine);
+                if (null != checkin) {
+                    
+                    if(in != null){
+                        
+                        in.dispose();
+                    }
+                    in = new checkIn(checkin);
+                    in.setVisible(true);
+                    hm.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(hm, "Invalid Smart Card");
+                }
+
+            } catch (HeadlessException | IOException e) {
                 System.err.println(e.toString());
             }
         }
         // Ignore all the other eventTypes, but you should consider the other ones.
     }
-
-
 
 }

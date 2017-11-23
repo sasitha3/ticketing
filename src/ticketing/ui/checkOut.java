@@ -7,22 +7,59 @@ package ticketing.ui;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.ArrayList;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import ticketing.dao.CheckDaoImpl;
+import ticketing.interfaces.CheckDAO;
+import ticketing.model.Trip;
+import ticketing.service.CheckService;
 
 /**
  *
  * @author Sasitha
  */
-public class checkOut extends javax.swing.JFrame {
+public final class checkOut extends javax.swing.JFrame {
+
+    CheckService service = new CheckService();
+    double amount;
+    int distance;
+    double cost;
+    double balance;
 
     /**
      * Creates new form checkOut
+     *
+     * @param amount
      */
-    public checkOut() {
+    public checkOut(double amount) {
         initComponents();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setLayout(new GridBagLayout());
         add(outPanel, new GridBagConstraints());
+        this.amount = amount;
+        loadAllStations();
+        enableButtons(amount);
+    }
+
+    void loadAllStations() {
+        CheckDAO check = new CheckDaoImpl();
+        ArrayList<String> list = new ArrayList<String>();
+        list = check.getAllStations();
+        for (int i = 0; i < list.size(); i++) {
+            cmbxStation.addItem((String) list.get(i));
+        }
+    }
+
+    void enableButtons(double amount) {
+        if (amount == 0) {
+            btnLoan.setEnabled(true);
+            lblMessage.setText("Your amount not enough to travel, you can go for a loan");
+        } else if (amount < 0) {
+            btnLoan.setEnabled(false);
+            btnProceed.setEnabled(false);
+            lblMessage.setText("Your amount not enough to travel and Please pay your loan");
+        }
     }
 
     /**
@@ -40,14 +77,16 @@ public class checkOut extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        location2 = new javax.swing.JTextField();
-        location1 = new javax.swing.JTextField();
-        location3 = new javax.swing.JTextField();
+        txtCost = new javax.swing.JTextField();
+        txtDistance = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        location4 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        txtBalance = new javax.swing.JTextField();
+        btnProceed = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
+        btnLoan = new javax.swing.JButton();
+        cmbxStation = new javax.swing.JComboBox<>();
+        lblMessage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -84,19 +123,25 @@ public class checkOut extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel6.setText("TOTAL COST                 :");
 
-        location2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtCost.setEditable(false);
+        txtCost.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
-        location1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-
-        location3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtDistance.setEditable(false);
+        txtDistance.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel7.setText("AVAILABLE BALANCE :");
 
-        location4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtBalance.setEditable(false);
+        txtBalance.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
-        jButton1.setBackground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("PROCEED");
+        btnProceed.setBackground(new java.awt.Color(255, 255, 255));
+        btnProceed.setText("PROCEED");
+        btnProceed.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProceedActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -112,6 +157,19 @@ public class checkOut extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel3.setText("CHECK-OUT");
 
+        btnLoan.setBackground(new java.awt.Color(255, 255, 255));
+        btnLoan.setText("LOAN");
+        btnLoan.setEnabled(false);
+
+        cmbxStation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbxStationActionPerformed(evt);
+            }
+        });
+
+        lblMessage.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lblMessage.setForeground(new java.awt.Color(255, 0, 0));
+
         javax.swing.GroupLayout outPanelLayout = new javax.swing.GroupLayout(outPanel);
         outPanel.setLayout(outPanelLayout);
         outPanelLayout.setHorizontalGroup(
@@ -123,23 +181,27 @@ public class checkOut extends javax.swing.JFrame {
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(outPanelLayout.createSequentialGroup()
                         .addGap(26, 26, 26)
-                        .addGroup(outPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton1)
-                            .addGroup(outPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(outPanelLayout.createSequentialGroup()
-                                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(64, 64, 64)
-                                    .addComponent(location4, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(outPanelLayout.createSequentialGroup()
-                                    .addGroup(outPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGap(62, 62, 62)
-                                    .addGroup(outPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(location3, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(location1, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(location2, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGroup(outPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(outPanelLayout.createSequentialGroup()
+                                .addGroup(outPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(62, 62, 62)
+                                .addGroup(outPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtDistance, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
+                                    .addComponent(txtCost, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
+                                    .addComponent(cmbxStation, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(outPanelLayout.createSequentialGroup()
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(64, 64, 64)
+                                .addGroup(outPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(outPanelLayout.createSequentialGroup()
+                                        .addComponent(btnLoan, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(btnProceed))
+                                    .addComponent(txtBalance, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(lblMessage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -155,28 +217,34 @@ public class checkOut extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
                 .addGroup(outPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, outPanelLayout.createSequentialGroup()
-                        .addGroup(outPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(location3, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(outPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(outPanelLayout.createSequentialGroup()
+                                .addComponent(cmbxStation, javax.swing.GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE)
+                                .addGap(2, 2, 2))
                             .addComponent(jLabel2))
-                        .addGap(22, 22, 22)
+                        .addGap(23, 23, 23)
                         .addGroup(outPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
-                            .addComponent(location1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtDistance, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(outPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
-                            .addComponent(location2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtCost, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(outPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel7)
-                            .addComponent(location4, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtBalance, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(33, 33, 33)
-                .addComponent(jButton1)
-                .addGap(81, 81, 81))
+                .addGroup(outPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnProceed)
+                    .addComponent(btnLoan))
+                .addGap(18, 18, 18)
+                .addComponent(lblMessage)
+                .addGap(49, 49, 49))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -199,43 +267,43 @@ public class checkOut extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(checkOut.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(checkOut.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(checkOut.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(checkOut.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void btnProceedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProceedActionPerformed
+        Trip trip = new Trip();
+        trip.setCost(this.cost);
+        trip.setDistance(this.distance);
+        
+        if (service.verifyTrip(trip, this.balance)) {
+            JOptionPane.showMessageDialog(this, "Successful, Have a nice day !");
+            home hm = new home();
+            hm.setVisible(true);
+            
+            this.dispose();
         }
-        //</editor-fold>
+    }//GEN-LAST:event_btnProceedActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new checkOut().setVisible(true);
-            }
-        });
+    void setFields() {
+        String comboValue = cmbxStation.getSelectedItem().toString();
+        this.distance = service.getDistance(comboValue);
+        this.cost = service.getCost(comboValue);
+        this.balance = this.amount - cost;
+        txtDistance.setText(Integer.toString(distance));
+        txtCost.setText(Double.toString(cost));
+        txtBalance.setText(Double.toString(balance));
+        if (balance < 0) {
+            
+            lblMessage.setText("Your amount not enough to travel, you can go for a loan");
+            btnLoan.setEnabled(true);
+            btnProceed.setEnabled(false);
+        }
     }
+    private void cmbxStationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbxStationActionPerformed
+        setFields();
+    }//GEN-LAST:event_cmbxStationActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnLoan;
+    private javax.swing.JButton btnProceed;
+    private javax.swing.JComboBox<String> cmbxStation;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -244,10 +312,10 @@ public class checkOut extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField location1;
-    private javax.swing.JTextField location2;
-    private javax.swing.JTextField location3;
-    private javax.swing.JTextField location4;
+    private javax.swing.JLabel lblMessage;
     private javax.swing.JPanel outPanel;
+    private javax.swing.JTextField txtBalance;
+    private javax.swing.JTextField txtCost;
+    private javax.swing.JTextField txtDistance;
     // End of variables declaration//GEN-END:variables
 }
