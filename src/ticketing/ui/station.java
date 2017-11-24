@@ -5,11 +5,20 @@
  */
 package ticketing.ui;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import ticketing.dao.PaymentDaoImpl;
@@ -99,6 +108,75 @@ e.scheduleAtFixedRate(new Runnable() {
         }
     }
     
+       public void Print(){
+           
+        try{
+            Payment pay = new Payment();
+            pay.setInvoiceNo(invoice_L.getText());
+            pay.setDate(lblDate.getText());
+            pay.setTime(lblTime.getText());
+            pay.setSmartId(idBox.getText());
+            pay.setPassengerName(passengerBox.getText());
+            pay.setType((typeBox.getSelectedItem().toString()));
+            pay.setAmount(Double.parseDouble(totBox.getText()));
+
+            if(validateFields(pay)==false){
+                JOptionPane.showMessageDialog(this, "Fields are empty");
+                setFieldsempty();
+            }
+            else {
+
+                JOptionPane.showMessageDialog(this, "Invoice created !");
+                Document doc=new Document();
+                File file=new File("Invoice.pdf");
+
+                if(file.exists()){
+                    file.delete();
+                }
+                try {
+                    PdfWriter.getInstance(doc, new FileOutputStream(file));
+                    doc.open();
+
+                    doc.add(new Paragraph("================================================="));
+                    doc.add(new Paragraph("         SMART CARD RECHARGE PAYMENT INVOICE                 "));
+                    doc.add(new Paragraph("================================================="));
+                    doc.add(new Paragraph("Invoice number         :"+invoice_L.getText()));
+                    doc.add(new Paragraph("Isued Date             : "+lblDate.getText()));
+                    doc.add(new Paragraph("Isued Time             : "+lblTime.getText()));
+                    doc.add(new Paragraph("**************************************************************"));
+                    doc.add(new Paragraph("Smart Card ID          :   "+idBox.getText()));
+                    doc.add(new Paragraph("Passenger Name         :   "+passengerBox.getText()));
+    
+                    doc.add(new Paragraph("Payment Type : "+typeBox.getSelectedItem()));
+                    doc.add(new Paragraph("****************************************************************"));
+                    doc.add(new Paragraph());
+                    doc.add(new Paragraph("Total(Rs:)                 : "+totBox.getText()));
+                    doc.add(new Paragraph());
+                    doc.add(new Paragraph());
+                    doc.add(new Paragraph("================================================="));
+                    doc.add(new Paragraph("================================================="));
+                    doc.close();
+
+                } catch (DocumentException ex) {
+                    Logger.getLogger(station.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(station.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+        }
+        catch (NumberFormatException e) {
+            System.out.println(e);
+            JOptionPane.showMessageDialog(this, "Please enter a number into amount field");
+           
+        }
+        catch (NullPointerException e) {
+            JOptionPane.showMessageDialog(this, "Fields are empty");
+            setFieldsempty();
+            System.out.println(e);
+        }
+
+       }
       
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -220,12 +298,6 @@ e.scheduleAtFixedRate(new Runnable() {
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
-            .addGroup(outPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(53, 53, 53)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(222, 222, 222))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, outPanelLayout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(invoice_L, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -249,6 +321,12 @@ e.scheduleAtFixedRate(new Runnable() {
                         .addComponent(passengerBox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE))
                     .addComponent(totBox, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(106, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, outPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(62, 62, 62)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(213, 213, 213))
         );
         outPanelLayout.setVerticalGroup(
             outPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -273,7 +351,7 @@ e.scheduleAtFixedRate(new Runnable() {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(outPanelLayout.createSequentialGroup()
                         .addGap(1, 1, 1)
-                        .addComponent(passengerBox)))
+                        .addComponent(passengerBox, javax.swing.GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE)))
                 .addGap(18, 18, 18)
                 .addGroup(outPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7)
@@ -284,11 +362,11 @@ e.scheduleAtFixedRate(new Runnable() {
                 .addGroup(outPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(totBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
-                .addGap(42, 42, 42)
+                .addGap(39, 39, 39)
                 .addGroup(outPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31))
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(33, 33, 33))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -362,7 +440,6 @@ e.scheduleAtFixedRate(new Runnable() {
             else {
                 try {
 
-                    //LogAgain log = new LogAgain();
 
                     if (p.checkValidSmartCard(idBox.getText()) == 1) {
                         JOptionPane.showMessageDialog(this, "Smart Card ID Not Found !");
@@ -372,9 +449,19 @@ e.scheduleAtFixedRate(new Runnable() {
 
                         if (p.addPayment(pay) == 0) {
 
-                            JOptionPane.showMessageDialog(this, "Successfully added");
+                           // JOptionPane.showMessageDialog(this, "Successfully added");
+                            int response = JOptionPane.showConfirmDialog(this,"Payment Successfully created ! \n do you want to Print recepit?", "Confirm",JOptionPane.YES_NO_OPTION);
+                             if (response == JOptionPane.YES_OPTION) {
+                            Print();
                             invoice();
                             setFieldsempty();
+                             }
+                             else{
+                            invoice();
+                            setFieldsempty(); 
+                             }
+     
+                           
                         } else if (p.addPayment(pay) == 1) {
                             JOptionPane.showMessageDialog(this, "account update error");
                             setFieldsempty();
