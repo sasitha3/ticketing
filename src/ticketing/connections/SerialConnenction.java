@@ -23,6 +23,7 @@ import ticketing.model.CheckedDet;
 import ticketing.service.CheckService;
 import ticketing.ui.checkIn;
 import ticketing.ui.home;
+import ticketing.ui.station;
 
 /**
  *
@@ -31,6 +32,7 @@ import ticketing.ui.home;
 public class SerialConnenction implements SerialPortEventListener {
 
     home hm = null;
+    station stat = null;
     checkIn in = null;
     CheckService service = new CheckService();
     SerialPort serialPort;
@@ -56,8 +58,9 @@ public class SerialConnenction implements SerialPortEventListener {
      */
     private static final int DATA_RATE = 9600;
 
-    public SerialConnenction(home hom) {
+    public SerialConnenction(home hom, station stat) {
         this.hm = hom;
+        this.stat = stat;
     }
 
     public void initialize() {
@@ -122,6 +125,7 @@ public class SerialConnenction implements SerialPortEventListener {
 
     /**
      * Handle an event on the serial port. Read the data and print it.
+     *
      * @param oEvent
      */
     @Override
@@ -132,17 +136,28 @@ public class SerialConnenction implements SerialPortEventListener {
                 System.out.println(inputLine);
                 CheckedDet checkin = service.validateCard(inputLine);
                 if (null != checkin) {
-                    
-                    if(in != null){
+                    if (this.hm != null && this.stat == null) {
+                        if (in != null) {
+
+                            in.dispose();
+                            in = null;
+                        }
+                        in = new checkIn(checkin);
+                        in.setVisible(true);
                         
-                        in.dispose();
+                        hm.dispose();
+                        hm = null;
+                        close();
+                        
+                    } else if (this.hm == null && this.stat != null) {
+                        stat.setFields(inputLine, checkin.getpName());
+                        close();
                     }
-                    in = new checkIn(checkin);
-                    in.setVisible(true);
-                    
-                    hm.dispose();
-                    close();
+
                 } else {
+                    if (hm == null && stat != null) 
+                        stat.setFieldsempty();
+                   
                     JOptionPane.showMessageDialog(hm, "Invalid Smart Card");
                 }
 

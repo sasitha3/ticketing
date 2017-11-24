@@ -327,12 +327,12 @@ public final class checkOut extends javax.swing.JFrame {
 
         if (service.verifyTrip(trip, this.balance)) {
             JOptionPane.showMessageDialog(this, "Successful, Have a nice day !");
-            home hm = new home();
-            hm.setVisible(true);
+            login log = new login();
+            log.setVisible(true);
 //            login log = new login();
 //            log.setVisible(true);
-            serial = new SerialConnenction(hm);
-            serial.initialize();
+//            serial = new SerialConnenction(hm,null);
+//            serial.initialize();
             this.dispose();
         }
     }
@@ -388,10 +388,8 @@ public final class checkOut extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLoanActionPerformed
 
     private void backBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backBtnActionPerformed
-        home hm = new home();
-        hm.setVisible(true);
-        serial = new SerialConnenction(hm);
-        serial.initialize();
+        login log = new login();
+        log.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_backBtnActionPerformed
 

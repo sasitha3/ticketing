@@ -5,6 +5,7 @@
  */
 package ticketing.interfaces;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import ticketing.model.CheckedDet;
 import ticketing.model.Trip;
@@ -56,4 +57,12 @@ public interface CheckDAO {
      * @return 
      */
     public int getStationID(String station);
+    
+    /**
+     * 
+     * @param current
+     * @param date
+     * @return 
+     */
+    public int getCount(int current, Date date);
 }

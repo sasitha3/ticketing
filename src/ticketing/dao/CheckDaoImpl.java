@@ -6,13 +6,11 @@
 package ticketing.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import ticketing.interfaces.CheckDAO;
 import ticketing.model.CheckedDet;
 import ticketing.model.Trip;
@@ -31,6 +29,8 @@ public class CheckDaoImpl extends BaseDAO implements CheckDAO {
     private static final String GET_PASANGER = "SELECT p.fname,p.lname,a.amount,a.loan from passengers p,account a, smartcard s "
             + "WHERE s.id=? AND a.aid=s.account_id AND a.passenger=p.pid";
     private static final String UPDATE_LOAN = "UPDATE account SET loan=?,amount=0 WHERE aid=(SELECT account_id FROM smartcard WHERE id=?)";
+    private static final String GET_COUNT = "SELECT COUNT(tripid) FROM Trip WHERE current=? AND date=?";
+    
     /**
      *
      * @param id
@@ -220,6 +220,37 @@ public class CheckDaoImpl extends BaseDAO implements CheckDAO {
             closeConnection(dbConn);
         }
         return -1;
+    }
+    
+    /**
+     *
+     * @param current
+     * @return
+     */
+    @Override
+    public int getCount(int current, Date date) {
+        Connection dbConn = getConnection();
+        int count = 0;
+        ResultSet rs;
+        try {
+
+            PreparedStatement ps = dbConn.prepareStatement(GET_COUNT);
+            ps.setInt(1, current);
+            ps.setDate(2, date);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                count = rs.getInt(1);
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e);
+
+        } finally {
+            closeConnection(dbConn);
+        }
+
+        return count;
     }
 
 }

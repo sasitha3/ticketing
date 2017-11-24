@@ -24,20 +24,29 @@ import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import ticketing.connections.SerialConnenction;
 import ticketing.dao.PaymentDaoImpl;
 import ticketing.model.Payment;
 
 public class station extends javax.swing.JFrame {
 
     PaymentDaoImpl p = new PaymentDaoImpl();
+    SerialConnenction serial = null;
 
     public station() {
         initComponents();
+        serial = new SerialConnenction(null, this);
+        serial.initialize();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setLayout(new GridBagLayout());
         add(outPanel, new GridBagConstraints());
         DateTime();
         invoice();
+    }
+
+    public void setFields(String sid, String name) {
+        idBox.setText(sid);
+        passengerBox.setText(name);
     }
 
     public void DateTime() {
@@ -500,10 +509,13 @@ public class station extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        serial = new SerialConnenction(null, this);
+        serial.initialize();
         setFieldsempty();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+
         login log = new login();
         log.setVisible(true);
         this.dispose();

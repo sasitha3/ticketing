@@ -159,11 +159,13 @@ final public class login extends javax.swing.JFrame {
             station sta = new station();
             sta.setVisible(true);
             this.dispose();
-            System.out.println("Started");
-            this.dispose();
+//            SerialConnenction m = new SerialConnenction(null, sta);
+//            m.initialize();
+            
+            
         } else {
             clearFields();
-            JOptionPane.showMessageDialog(this, "User name or password is in correct");
+            JOptionPane.showMessageDialog(this, "User name or password is incorrect");
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -181,7 +183,7 @@ final public class login extends javax.swing.JFrame {
             
             home hm = new home();
             hm.setVisible(true);
-            SerialConnenction m = new SerialConnenction(hm);
+            SerialConnenction m = new SerialConnenction(hm,null);
             m.initialize();
             System.out.println("Started");
             this.dispose();
