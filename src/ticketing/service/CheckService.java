@@ -5,7 +5,6 @@
  */
 package ticketing.service;
 
-import java.util.Date;
 import ticketing.calc.DistanceCalc;
 import ticketing.dao.CheckDaoImpl;
 import ticketing.interfaces.CheckDAO;
@@ -36,9 +35,9 @@ public class CheckService {
      * @return 
      */
     public CheckedDet validateCard(String sId){
-        CheckedDet check = null;
+         
         CheckDAO getPas = new CheckDaoImpl();
-        check = getPas.getPasangerData(sId);
+        CheckedDet check = getPas.getPasangerData(sId);
         return check;
     }
     
@@ -49,17 +48,14 @@ public class CheckService {
      * @return 
      */
     public boolean verifyTrip(Trip trip, double balance){
-        Date date = new Date();
-        
+       
         CheckDAO verify = new CheckDaoImpl();
-        trip.setCurrent(userDetails.getStationId());
-//        trip.setDate(date);
-        
-//        verify.addTrip(trip);
-//        verify.updateAmount(balance, 1);
+        trip.setCurrent(userDetails.getStationId());     
+        verify.addTrip(trip);
+        verify.updateAmount(balance, trip.getsID());
         return true;
     }
-    
+        
     /**
      * 
      * @param station

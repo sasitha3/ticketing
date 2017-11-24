@@ -45,10 +45,10 @@ public interface CheckDAO {
     /**
      * 
      * @param cost
-     * @param accountId
+     * @param sId
      * @return 
      */
-    public boolean updateAmount(double cost, int accountId);
+    public boolean updateAmount(double cost, String sId);
     
     /**
      * 

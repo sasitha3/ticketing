@@ -6,15 +6,18 @@
 package ticketing.connections;
 
 import gnu.io.CommPortIdentifier;
+import gnu.io.PortInUseException;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
+import gnu.io.UnsupportedCommOperationException;
 import java.awt.HeadlessException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.Enumeration;
+import java.util.TooManyListenersException;
 import javax.swing.JOptionPane;
 import ticketing.model.CheckedDet;
 import ticketing.service.CheckService;
@@ -101,7 +104,7 @@ public class SerialConnenction implements SerialPortEventListener {
             // add event listeners
             serialPort.addEventListener(this);
             serialPort.notifyOnDataAvailable(true);
-        } catch (Exception e) {
+        } catch (PortInUseException | UnsupportedCommOperationException | IOException | TooManyListenersException e) {
             System.err.println(e.toString());
         }
     }

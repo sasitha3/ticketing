@@ -23,10 +23,11 @@ public class CheckDaoImpl extends BaseDAO implements CheckDAO {
     private static final String ALL_STATIONS = "SELECT name FROM stations";
     private static final String GET_STATION = "SELECT name FROM stations WHERE station_id=?";
     private static final String STATION_ID = "SELECT station_id FROM stations WHERE name=?";
-    private static final String UPDATE_AMOUNT = "UPDATE account SET amount=? WHERE aid=?";
+    private static final String UPDATE_AMOUNT = "UPDATE account SET amount=? WHERE aid=(SELECT account_id FROM smartcard WHERE id=?)";
     private static final String CREATE_TRIP = "INSERT INTO trip VALUES(?,?,?,?,?,?,?,?)";
     private static final String GET_PASANGER = "SELECT p.fname,p.lname,a.amount,a.loan from passengers p,account a, smartcard s "
             + "WHERE s.id=? AND a.aid=s.account_id AND a.passenger=p.pid";
+    private static final String UPDATE_LOAN = "UPDATE account SET loan=?,amount=0 WHERE aid=(SELECT account_id FROM smartcard WHERE id=?)";
     /**
      *
      * @param id
@@ -72,8 +73,8 @@ public class CheckDaoImpl extends BaseDAO implements CheckDAO {
             
             ps.setInt(1, 0);
             ps.setString(2, trip.getsID());
-            ps.setDate(3, trip.getDate());
-            ps.setTime(4, trip.getTime());
+            ps.setString(3, "2017-01-11");
+            ps.setString(4, "20:01:35");
             ps.setInt(5, trip.getCurrent());
             ps.setInt(6, trip.getDestination());
             ps.setDouble(7, trip.getDistance());
@@ -138,6 +139,7 @@ public class CheckDaoImpl extends BaseDAO implements CheckDAO {
 
             while (rs.next()) {
                 data = new CheckedDet();
+                data.setsId(smartId);
                 data.setpName(rs.getString(1) + " " + rs.getString(2));
                 if(rs.getDouble(4) == 0){
                     data.setAmount(rs.getDouble(3));
@@ -157,21 +159,26 @@ public class CheckDaoImpl extends BaseDAO implements CheckDAO {
     }
 
     /**
-     *
      * @param cost
-     * @param accountId
+     * @param sId
      * @return
      */
     @Override
-    public boolean updateAmount(double cost, int accountId) {
+    public boolean updateAmount(double cost, String sId) {
         Connection dbConn = getConnection();
         boolean result = false;
         ResultSet rs;
         try {
 
-            PreparedStatement ps = dbConn.prepareStatement(UPDATE_AMOUNT);
+            PreparedStatement ps = null;
+            if(cost < 0){
+            ps = dbConn.prepareStatement(UPDATE_LOAN);
+            cost = cost * -1;
+            } else if(cost > 0){
+            ps = dbConn.prepareStatement(UPDATE_AMOUNT);
+            }
             ps.setDouble(1, cost);
-            ps.setInt(2, accountId);
+            ps.setString(2, sId);
             ps.executeUpdate();
             result = true;
 

@@ -16,28 +16,49 @@ import ticketing.service.CheckService;
  * @author Sasitha
  */
 public class checkIn extends javax.swing.JFrame {
-    
+
     double amount;
+    String smartId;
+
     /**
      * Creates new form checkIn
+     *
      * @param chekDet
      */
     public checkIn(CheckedDet chekDet) {
+
+        this.smartId = chekDet.getsId();
         CheckService service = new CheckService();
         initComponents();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setLayout(new GridBagLayout());
         add(inPanel, new GridBagConstraints());
-        String location = service.getCurrentStation();       
+        String location = service.getCurrentStation();
         setPasanger(chekDet.getpName(), location, chekDet.getAmount());
         amount = chekDet.getAmount();
     }
 
-    void setPasanger(String pName, String loc, double bal){
+    /**
+     * 
+     * @param pName
+     * @param loc
+     * @param bal 
+     */
+    void setPasanger(String pName, String loc, double bal) {
         psName.setText(pName);
         location.setText(loc);
         balance.setText(Double.toString(bal));
+        if (bal < 0) {
+            
+            verifyBtn.setEnabled(false);
+            msgLbl.setText("You balance not enogh to travel, Please pay you loan");
+        } else {
+            
+            verifyBtn.setEnabled(true);
+            msgLbl.setText("");
+        }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -57,7 +78,9 @@ public class checkIn extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         location = new javax.swing.JTextField();
         balance = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        verifyBtn = new javax.swing.JButton();
+        msgLbl = new javax.swing.JLabel();
+        backBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -106,11 +129,23 @@ public class checkIn extends javax.swing.JFrame {
         balance.setEditable(false);
         balance.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
-        jButton1.setBackground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("VERIFY");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        verifyBtn.setBackground(new java.awt.Color(255, 255, 255));
+        verifyBtn.setText("VERIFY");
+        verifyBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                verifyBtnActionPerformed(evt);
+            }
+        });
+
+        msgLbl.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        msgLbl.setForeground(new java.awt.Color(204, 0, 0));
+
+        backBtn.setBackground(new java.awt.Color(255, 255, 255));
+        backBtn.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        backBtn.setText("BACK");
+        backBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backBtnActionPerformed(evt);
             }
         });
 
@@ -126,32 +161,37 @@ public class checkIn extends javax.swing.JFrame {
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inPanelLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(inPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inPanelLayout.createSequentialGroup()
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(256, 256, 256))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inPanelLayout.createSequentialGroup()
-                                .addGroup(inPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jButton1)
-                                    .addGroup(inPanelLayout.createSequentialGroup()
-                                        .addGroup(inPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(62, 62, 62)
-                                        .addGroup(inPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(psName, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(location, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(balance, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addGap(182, 182, 182))))))
+                        .addGroup(inPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(verifyBtn)
+                            .addGroup(inPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(msgLbl)
+                                .addGroup(inPanelLayout.createSequentialGroup()
+                                    .addGroup(inPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGap(62, 62, 62)
+                                    .addGroup(inPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(psName, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(location, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(balance, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(182, 182, 182))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inPanelLayout.createSequentialGroup()
+                        .addComponent(backBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(256, 256, 256))))
         );
         inPanelLayout.setVerticalGroup(
             inPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(inPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel3)
+                .addGroup(inPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(inPanelLayout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel3))
+                    .addComponent(backBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(57, 57, 57)
                 .addGroup(inPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(psName, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -165,8 +205,10 @@ public class checkIn extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addComponent(balance, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(52, 52, 52)
-                .addComponent(jButton1)
-                .addContainerGap(118, Short.MAX_VALUE))
+                .addComponent(verifyBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(msgLbl)
+                .addContainerGap(107, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -189,17 +231,23 @@ public class checkIn extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       checkOut out = new checkOut(amount);
-       out.setVisible(true);
-       this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void verifyBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verifyBtnActionPerformed
+        checkOut out = new checkOut(amount, smartId);
+        out.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_verifyBtnActionPerformed
+
+    private void backBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backBtnActionPerformed
+        home hm = new home();
+        hm.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_backBtnActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton backBtn;
     private javax.swing.JTextField balance;
     private javax.swing.JPanel inPanel;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -207,6 +255,8 @@ public class checkIn extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField location;
+    private javax.swing.JLabel msgLbl;
     private javax.swing.JTextField psName;
+    private javax.swing.JButton verifyBtn;
     // End of variables declaration//GEN-END:variables
 }

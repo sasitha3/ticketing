@@ -13,6 +13,7 @@ public class CheckedDet {
      
     private String pName;
     private double amount;
+    private String sId;
 
     /**
      * @return the getAmount
@@ -40,6 +41,20 @@ public class CheckedDet {
      */
     public void setpName(String pName) {
         this.pName = pName;
+    }
+
+    /**
+     * @return the sId
+     */
+    public String getsId() {
+        return sId;
+    }
+
+    /**
+     * @param sId the sId to set
+     */
+    public void setsId(String sId) {
+        this.sId = sId;
     }
 
 }

@@ -55,6 +55,11 @@ final public class login extends javax.swing.JFrame {
 
         jButton1.setBackground(new java.awt.Color(255, 255, 255));
         jButton1.setText("CANCEL");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setBackground(new java.awt.Color(255, 255, 255));
         jButton2.setText("LOGIN");
@@ -141,7 +146,6 @@ final public class login extends javax.swing.JFrame {
             hm.setVisible(true);
             SerialConnenction m = new SerialConnenction(hm);
             m.initialize();
-
             System.out.println("Started");
             this.dispose();
         } else {
@@ -149,6 +153,10 @@ final public class login extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "User name or password is in correct");
         }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        clearFields();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
