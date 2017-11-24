@@ -108,7 +108,7 @@ public class PaymentDaoImpl extends BaseDAO implements PaymentDao {
     @Override
     public int updateAccount(String smartID, double recharge_amount) {
 
-        int daid;
+        int daid=0;
         double damount = 0, amount = 0;
         double dloan = 0;
 
@@ -122,6 +122,9 @@ public class PaymentDaoImpl extends BaseDAO implements PaymentDao {
                 daid = rs.getInt(1);
                 damount = rs.getDouble(2);
                 dloan = rs.getDouble(3);
+            }
+            if(daid==0 && damount==0 && dloan==0){
+              return 1;
             }
 
             if (dloan > 0 && damount == 0) {
