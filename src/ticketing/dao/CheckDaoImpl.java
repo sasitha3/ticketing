@@ -9,7 +9,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import ticketing.interfaces.CheckDAO;
 import ticketing.model.CheckedDet;
 import ticketing.model.Trip;
@@ -64,8 +67,9 @@ public class CheckDaoImpl extends BaseDAO implements CheckDAO {
      * @return
      */
     @Override
-    public boolean addTrip(Trip trip) {
+    public boolean addTrip(Trip trip) {        
         Connection dbConn = getConnection();
+        
         boolean result = false;
         try {
 
@@ -73,8 +77,8 @@ public class CheckDaoImpl extends BaseDAO implements CheckDAO {
             
             ps.setInt(1, 0);
             ps.setString(2, trip.getsID());
-            ps.setString(3, "2017-01-11");
-            ps.setString(4, "20:01:35");
+            ps.setString(3, trip.getDate());
+            ps.setString(4, trip.getTime());
             ps.setInt(5, trip.getCurrent());
             ps.setInt(6, trip.getDestination());
             ps.setDouble(7, trip.getDistance());
@@ -167,14 +171,13 @@ public class CheckDaoImpl extends BaseDAO implements CheckDAO {
     public boolean updateAmount(double cost, String sId) {
         Connection dbConn = getConnection();
         boolean result = false;
-        ResultSet rs;
         try {
 
             PreparedStatement ps = null;
             if(cost < 0){
             ps = dbConn.prepareStatement(UPDATE_LOAN);
             cost = cost * -1;
-            } else if(cost > 0){
+            } else if(cost >= 0){
             ps = dbConn.prepareStatement(UPDATE_AMOUNT);
             }
             ps.setDouble(1, cost);

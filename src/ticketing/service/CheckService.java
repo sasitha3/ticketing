@@ -5,6 +5,9 @@
  */
 package ticketing.service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import ticketing.calc.DistanceCalc;
 import ticketing.dao.CheckDaoImpl;
 import ticketing.interfaces.CheckDAO;
@@ -49,6 +52,14 @@ public class CheckService {
      */
     public boolean verifyTrip(Trip trip, double balance){
        
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date = new Date();
+        
+        String dateNtime = dateFormat.format(date);
+        String dateTime[];
+        dateTime = dateNtime.split(" ");
+        trip.setDate(dateTime[0]);
+        trip.setTime(dateTime[1]);
         CheckDAO verify = new CheckDaoImpl();
         trip.setCurrent(userDetails.getStationId());     
         verify.addTrip(trip);

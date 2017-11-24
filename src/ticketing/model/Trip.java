@@ -6,7 +6,7 @@
 package ticketing.model;
 
 import java.sql.Time;
-import java.sql.Date;
+import java.util.Date;
 
 /**
  *
@@ -16,8 +16,8 @@ public class Trip {
     
     private int tripID;
     private String sID;
-    private Date date;
-    private Time time;
+    private String date;
+    private String time;
     private int current;
     private int destination;
     private double distance;
@@ -54,28 +54,28 @@ public class Trip {
     /**
      * @return the date
      */
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
     /**
      * @param date the date to set
      */
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
     /**
      * @return the time
      */
-    public Time getTime() {
+    public String getTime() {
         return time;
     }
 
     /**
      * @param time the time to set
      */
-    public void setTime(Time time) {
+    public void setTime(String time) {
         this.time = time;
     }
 

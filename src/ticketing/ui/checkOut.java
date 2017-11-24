@@ -23,7 +23,7 @@ import ticketing.service.CheckService;
 public final class checkOut extends javax.swing.JFrame {
 
     CheckService service = new CheckService();
-    SerialConnenction serial = null;
+//    SerialConnenction serial = null;
     double amount;
     int distance;
     double cost;
@@ -387,7 +387,7 @@ public final class checkOut extends javax.swing.JFrame {
     private void backBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backBtnActionPerformed
         home hm = new home();
         hm.setVisible(true);
-        serial = new SerialConnenction(hm);
+//        serial = new SerialConnenction(hm);
         this.dispose();
     }//GEN-LAST:event_backBtnActionPerformed
 

@@ -26,91 +26,82 @@ import ticketing.model.Payment;
 
 public class station extends javax.swing.JFrame {
 
-   PaymentDaoImpl p =new PaymentDaoImpl();
-   
+    PaymentDaoImpl p = new PaymentDaoImpl();
+
     public station() {
         initComponents();
         DateTime();
         invoice();
     }
 
-       public void DateTime(){
-       
-ScheduledExecutorService e= Executors.newSingleThreadScheduledExecutor();
-e.scheduleAtFixedRate(new Runnable() {
-  @Override
-  public void run() {
-    // do stuff
-    SwingUtilities.invokeLater(new Runnable() {
-      
-     
-       Date date=new Date();
-        SimpleDateFormat D=new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat T=new SimpleDateFormat("hh:mm:ss a");
-        
-        @Override
-        public void run() {
-           lblDate.setText(D.format(date));
-           lblTime.setText(T.format(date));
-          
-        }
-              
-    });
-  }
-}, 0, 1, TimeUnit.SECONDS);
-              
+    public void DateTime() {
+
+        ScheduledExecutorService e = Executors.newSingleThreadScheduledExecutor();
+        e.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                // do stuff
+                SwingUtilities.invokeLater(new Runnable() {
+
+                    Date date = new Date();
+                    SimpleDateFormat D = new SimpleDateFormat("yyyy-MM-dd");
+                    SimpleDateFormat T = new SimpleDateFormat("hh:mm:ss a");
+
+                    @Override
+                    public void run() {
+                        lblDate.setText(D.format(date));
+                        lblTime.setText(T.format(date));
+
+                    }
+
+                });
+            }
+        }, 0, 1, TimeUnit.SECONDS);
+
     }
-    
-    
-    public void invoice(){
-        
-        String bill=p.loadInvoice();
+
+    public void invoice() {
+
+        String bill = p.loadInvoice();
         invoice_L.setText(bill);
     }
-    
-      public void setFieldsempty()
-    {
+
+    public void setFieldsempty() {
         idBox.setText("");
         passengerBox.setText("");
         typeBox.setSelectedItem("Select Payment Type");
-         totBox.setText("");
-        
-    }
-    
+        totBox.setText("");
 
-      public boolean validateFields(Payment pay) {
-            String pid=pay.getInvoiceNo();
-            String smartID=pay.getSmartId();
-            String date=pay.getDate();
-            String time=pay.getTime();
-            String type=pay.getType();
-            Double amount=pay.getAmount();
-           
-            
-        
-            if(pid.isEmpty()||smartID.isEmpty()||date.isEmpty()||time.isEmpty()||type.equals("Select Payment Type")||amount==null){
-                return false;
-                
-            }
-            
-        
-      return true;
     }
-      
-      
-       public boolean isvalidAmount(double value){
-        
-        if(value<0){
+
+    public boolean validateFields(Payment pay) {
+        String pid = pay.getInvoiceNo();
+        String smartID = pay.getSmartId();
+        String date = pay.getDate();
+        String time = pay.getTime();
+        String type = pay.getType();
+        Double amount = pay.getAmount();
+
+        if (pid.isEmpty() || smartID.isEmpty() || date.isEmpty() || time.isEmpty() || type.equals("Select Payment Type") || amount == null) {
             return false;
+
         }
-        else{
+
         return true;
+    }
+
+    public boolean isvalidAmount(double value) {
+
+        if (value < 0) {
+            return false;
+        } else {
+            return true;
         }
     }
-    
-       public void Print(){
-           
-        try{
+
+    public void Print() {
+
+        try {
             Payment pay = new Payment();
             pay.setInvoiceNo(invoice_L.getText());
             pay.setDate(lblDate.getText());
@@ -120,17 +111,16 @@ e.scheduleAtFixedRate(new Runnable() {
             pay.setType((typeBox.getSelectedItem().toString()));
             pay.setAmount(Double.parseDouble(totBox.getText()));
 
-            if(validateFields(pay)==false){
+            if (validateFields(pay) == false) {
                 JOptionPane.showMessageDialog(this, "Fields are empty");
                 setFieldsempty();
-            }
-            else {
+            } else {
 
                 JOptionPane.showMessageDialog(this, "Invoice created !");
-                Document doc=new Document();
-                File file=new File("Invoice.pdf");
+                Document doc = new Document();
+                File file = new File("Invoice.pdf");
 
-                if(file.exists()){
+                if (file.exists()) {
                     file.delete();
                 }
                 try {
@@ -140,17 +130,17 @@ e.scheduleAtFixedRate(new Runnable() {
                     doc.add(new Paragraph("================================================="));
                     doc.add(new Paragraph("         SMART CARD RECHARGE PAYMENT INVOICE                 "));
                     doc.add(new Paragraph("================================================="));
-                    doc.add(new Paragraph("Invoice number         :"+invoice_L.getText()));
-                    doc.add(new Paragraph("Isued Date             : "+lblDate.getText()));
-                    doc.add(new Paragraph("Isued Time             : "+lblTime.getText()));
+                    doc.add(new Paragraph("Invoice number         :" + invoice_L.getText()));
+                    doc.add(new Paragraph("Isued Date             : " + lblDate.getText()));
+                    doc.add(new Paragraph("Isued Time             : " + lblTime.getText()));
                     doc.add(new Paragraph("**************************************************************"));
-                    doc.add(new Paragraph("Smart Card ID          :   "+idBox.getText()));
-                    doc.add(new Paragraph("Passenger Name         :   "+passengerBox.getText()));
-    
-                    doc.add(new Paragraph("Payment Type : "+typeBox.getSelectedItem()));
+                    doc.add(new Paragraph("Smart Card ID          :   " + idBox.getText()));
+                    doc.add(new Paragraph("Passenger Name         :   " + passengerBox.getText()));
+
+                    doc.add(new Paragraph("Payment Type : " + typeBox.getSelectedItem()));
                     doc.add(new Paragraph("****************************************************************"));
                     doc.add(new Paragraph());
-                    doc.add(new Paragraph("Total(Rs:)                 : "+totBox.getText()));
+                    doc.add(new Paragraph("Total(Rs:)                 : " + totBox.getText()));
                     doc.add(new Paragraph());
                     doc.add(new Paragraph());
                     doc.add(new Paragraph("================================================="));
@@ -164,20 +154,18 @@ e.scheduleAtFixedRate(new Runnable() {
                 }
 
             }
-        }
-        catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
             System.out.println(e);
             JOptionPane.showMessageDialog(this, "Please enter a number into amount field");
-           
-        }
-        catch (NullPointerException e) {
+
+        } catch (NullPointerException e) {
             JOptionPane.showMessageDialog(this, "Fields are empty");
             setFieldsempty();
             System.out.println(e);
         }
 
-       }
-      
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -402,15 +390,14 @@ e.scheduleAtFixedRate(new Runnable() {
     }//GEN-LAST:event_idBoxKeyReleased
 
     private void idBoxKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_idBoxKeyTyped
-        String id=idBox.getText();
-        String name=p.fillPassenger(id);
+        String id = idBox.getText();
+        String name = p.fillPassenger(id);
 
-        if(name.equals("fail")){
+        if (name.equals("fail")) {
             JOptionPane.showMessageDialog(this, "Please enter values to smart ID field");
             idBox.setText("");
             passengerBox.setText("");
-        }
-        else{
+        } else {
 
             passengerBox.setText(name);
         }
@@ -418,7 +405,7 @@ e.scheduleAtFixedRate(new Runnable() {
     }//GEN-LAST:event_idBoxKeyTyped
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        try{
+        try {
             Payment pay = new Payment();
             pay.setInvoiceNo(invoice_L.getText());
             pay.setDate(lblDate.getText());
@@ -428,18 +415,14 @@ e.scheduleAtFixedRate(new Runnable() {
             pay.setType((typeBox.getSelectedItem().toString()));
             pay.setAmount(Double.parseDouble(totBox.getText()));
 
-            if(validateFields(pay)==false){
+            if (validateFields(pay) == false) {
                 JOptionPane.showMessageDialog(this, "Fields are empty");
                 setFieldsempty();
-            }
-            else if(!isvalidAmount(Double.parseDouble(totBox.getText()))){
+            } else if (!isvalidAmount(Double.parseDouble(totBox.getText()))) {
                 JOptionPane.showMessageDialog(this, "Please enter an valid amount for Recharge amount field");
                 totBox.setText("");
-            }
-
-            else {
+            } else {
                 try {
-
 
                     if (p.checkValidSmartCard(idBox.getText()) == 1) {
                         JOptionPane.showMessageDialog(this, "Smart Card ID Not Found !");
@@ -449,26 +432,22 @@ e.scheduleAtFixedRate(new Runnable() {
 
                         if (p.addPayment(pay) == 0) {
 
-                           // JOptionPane.showMessageDialog(this, "Successfully added");
-                            int response = JOptionPane.showConfirmDialog(this,"Payment Successfully created ! \n do you want to Print recepit?", "Confirm",JOptionPane.YES_NO_OPTION);
-                             if (response == JOptionPane.YES_OPTION) {
-                            Print();
-                            invoice();
-                            setFieldsempty();
-                             }
-                             else{
-                            invoice();
-                            setFieldsempty(); 
-                             }
-     
-                           
+                            // JOptionPane.showMessageDialog(this, "Successfully added");
+                            int response = JOptionPane.showConfirmDialog(this, "Payment Successfully created ! \n do you want to Print recepit?", "Confirm", JOptionPane.YES_NO_OPTION);
+                            if (response == JOptionPane.YES_OPTION) {
+                                Print();
+                                invoice();
+                                setFieldsempty();
+                            } else {
+                                invoice();
+                                setFieldsempty();
+                            }
+
                         } else if (p.addPayment(pay) == 1) {
                             JOptionPane.showMessageDialog(this, "account update error");
                             setFieldsempty();
 
-                        }
-
-                        else {
+                        } else {
                             JOptionPane.showMessageDialog(this, "Fail");
                             setFieldsempty();
                         }
@@ -477,24 +456,19 @@ e.scheduleAtFixedRate(new Runnable() {
                     JOptionPane.showMessageDialog(this, "Fields are empty");
                     setFieldsempty();
                     System.out.println(e);
-                }
-                catch (NumberFormatException e) {
+                } catch (NumberFormatException e) {
                     System.out.println(e);
                     JOptionPane.showMessageDialog(this, "Please enter a number");
 
-                }
-                catch(Exception e){
+                } catch (Exception e) {
                     System.out.println(e);
                 }
             }
-        }
-
-        catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
             System.out.println(e);
             JOptionPane.showMessageDialog(this, "Please enter a number");
             totBox.setText("");
-        }
-        catch (NullPointerException e) {
+        } catch (NullPointerException e) {
             JOptionPane.showMessageDialog(this, "Fields are empty");
             setFieldsempty();
             System.out.println(e);
@@ -503,7 +477,7 @@ e.scheduleAtFixedRate(new Runnable() {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-       setFieldsempty();
+        setFieldsempty();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
