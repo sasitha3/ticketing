@@ -139,7 +139,9 @@ public class SerialConnenction implements SerialPortEventListener {
                     }
                     in = new checkIn(checkin);
                     in.setVisible(true);
+                    
                     hm.dispose();
+                    close();
                 } else {
                     JOptionPane.showMessageDialog(hm, "Invalid Smart Card");
                 }

@@ -23,7 +23,7 @@ import ticketing.service.CheckService;
 public final class checkOut extends javax.swing.JFrame {
 
     CheckService service = new CheckService();
-//    SerialConnenction serial = null;
+    SerialConnenction serial = null;
     double amount;
     int distance;
     double cost;
@@ -214,13 +214,7 @@ public final class checkOut extends javax.swing.JFrame {
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(outPanelLayout.createSequentialGroup()
                         .addGap(26, 26, 26)
-                        .addGroup(outPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lblMessage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, outPanelLayout.createSequentialGroup()
-                                .addGap(250, 250, 250)
-                                .addComponent(btnLoan)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
-                                .addComponent(btnProceed))
+                        .addGroup(outPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(outPanelLayout.createSequentialGroup()
                                 .addGroup(outPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(outPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -229,13 +223,19 @@ public final class checkOut extends javax.swing.JFrame {
                                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(62, 62, 62)
-                                .addGroup(outPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtBalance)
-                                    .addGroup(outPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(txtDistance, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
-                                        .addComponent(txtCost, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
-                                        .addComponent(cmbxStation, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(outPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtDistance, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
+                                    .addComponent(txtCost, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
+                                    .addComponent(cmbxStation, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtBalance)))
+                            .addGroup(outPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(lblMessage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, outPanelLayout.createSequentialGroup()
+                                    .addGap(250, 250, 250)
+                                    .addComponent(btnLoan)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                                    .addComponent(btnProceed))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, outPanelLayout.createSequentialGroup()
@@ -257,7 +257,7 @@ public final class checkOut extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, outPanelLayout.createSequentialGroup()
                         .addGap(1, 1, 1)
                         .addComponent(backBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
+                .addGap(62, 62, 62)
                 .addGroup(outPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, outPanelLayout.createSequentialGroup()
                         .addGroup(outPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -274,9 +274,11 @@ public final class checkOut extends javax.swing.JFrame {
                             .addComponent(jLabel6)
                             .addComponent(txtCost, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addGroup(outPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(outPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel7)
-                            .addComponent(txtBalance, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(outPanelLayout.createSequentialGroup()
+                                .addComponent(txtBalance)
+                                .addGap(1, 1, 1))))
                     .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(33, 33, 33)
                 .addGroup(outPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -327,9 +329,10 @@ public final class checkOut extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Successful, Have a nice day !");
             home hm = new home();
             hm.setVisible(true);
-
-//            serial = new SerialConnenction(hm);
-//            serial.initialize();
+//            login log = new login();
+//            log.setVisible(true);
+            serial = new SerialConnenction(hm);
+            serial.initialize();
             this.dispose();
         }
     }
@@ -387,7 +390,8 @@ public final class checkOut extends javax.swing.JFrame {
     private void backBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backBtnActionPerformed
         home hm = new home();
         hm.setVisible(true);
-//        serial = new SerialConnenction(hm);
+        serial = new SerialConnenction(hm);
+        serial.initialize();
         this.dispose();
     }//GEN-LAST:event_backBtnActionPerformed
 
