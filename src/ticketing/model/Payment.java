@@ -10,6 +10,7 @@ package ticketing.model;
  * @author wasana
  */
 public class Payment {
+
     private String invoiceNo;
     private String smartId;
     private String passengerName;
@@ -33,8 +34,6 @@ public class Payment {
     public void setTime(String time) {
         this.time = time;
     }
-   
-    
 
     public String getInvoiceNo() {
         return invoiceNo;
@@ -75,5 +74,5 @@ public class Payment {
     public void setAmount(double amount) {
         this.amount = amount;
     }
-    
+
 }

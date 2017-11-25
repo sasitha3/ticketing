@@ -4,8 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import ticketing.interfaces.PaymentDao;
 import ticketing.model.Payment;
 
@@ -63,9 +61,9 @@ public class PaymentDaoImpl extends BaseDAO implements PaymentDao {
                     return 0;
                 }//the smart ID 
             }
-          //  System.out.println(rs.getString(1));
+            //  System.out.println(rs.getString(1));
             return 1;//the smart card id does not provided already exists in the db
- 
+
         } catch (Exception e) {
             System.out.println(e);
             return 2;
@@ -108,7 +106,7 @@ public class PaymentDaoImpl extends BaseDAO implements PaymentDao {
     @Override
     public int updateAccount(String smartID, double recharge_amount) {
 
-        int daid=0;
+        int daid = 0;
         double damount = 0, amount = 0;
         double dloan = 0;
 
@@ -123,8 +121,8 @@ public class PaymentDaoImpl extends BaseDAO implements PaymentDao {
                 damount = rs.getDouble(2);
                 dloan = rs.getDouble(3);
             }
-            if(daid==0 && damount==0 && dloan==0){
-              return 1;
+            if (daid == 0 && damount == 0 && dloan == 0) {
+                return 1;
             }
 
             if (dloan > 0 && damount == 0) {
@@ -166,19 +164,17 @@ public class PaymentDaoImpl extends BaseDAO implements PaymentDao {
 
             pst = (PreparedStatement) dbConn.prepareStatement(sql);
             rs = pst.executeQuery();
-           
-            
+
             while (rs.next()) {
 
                 fname = rs.getString(1);
                 lname = rs.getString(2);
 
             }
-           
 
         } catch (SQLException ex) {
             System.out.println(ex);
-            
+
             return "fail";
         }
 

@@ -49,6 +49,7 @@ public class station extends javax.swing.JFrame {
         passengerBox.setText(name);
     }
 
+    //set today date and time
     public void DateTime() {
 
         ScheduledExecutorService e = Executors.newSingleThreadScheduledExecutor();
@@ -74,7 +75,7 @@ public class station extends javax.swing.JFrame {
         }, 0, 1, TimeUnit.SECONDS);
 
     }
-
+//set invoice number by system generating
     public void invoice() {
 
         String bill = p.loadInvoice();
@@ -113,7 +114,7 @@ public class station extends javax.swing.JFrame {
             return true;
         }
     }
-
+//print invoice 
     public void Print() {
 
         try {
@@ -435,7 +436,7 @@ public class station extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_idBoxKeyTyped
-
+//adding payment
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
             Payment pay = new Payment();

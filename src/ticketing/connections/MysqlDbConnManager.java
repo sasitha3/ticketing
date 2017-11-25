@@ -20,9 +20,9 @@ public enum MysqlDbConnManager {
     MANAGER;
 
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://localhost:3306/tickets";
-    static final String USER = "root";
-    static final String PASS = "";
+    static final String DB_URL = "jdbc:mysql://188.166.187.121:3306/ticketing";
+    static final String USER = "wedding";
+    static final String PASS = "Wedding@#0ne";
 
     public Connection getConnection() {
         Connection dbConn = null;
