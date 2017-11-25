@@ -29,7 +29,7 @@ public class CheckDaoImpl extends BaseDAO implements CheckDAO {
     private static final String GET_PASANGER = "SELECT p.fname,p.lname,a.amount,a.loan from passengers p,account a, smartcard s "
             + "WHERE s.id=? AND a.aid=s.account_id AND a.passenger=p.pid";
     private static final String UPDATE_LOAN = "UPDATE account SET loan=?,amount=0 WHERE aid=(SELECT account_id FROM smartcard WHERE id=?)";
-    private static final String GET_COUNT = "SELECT COUNT(tripid) FROM Trip WHERE current=? AND date=?";
+    private static final String GET_COUNT = "SELECT COUNT(tripid) FROM trip WHERE current=? AND date=?";
     
     /**
      *

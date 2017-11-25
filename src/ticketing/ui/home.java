@@ -7,7 +7,6 @@ package ticketing.ui;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.Date;
 import javax.swing.JFrame;
 import ticketing.service.CheckService;
 

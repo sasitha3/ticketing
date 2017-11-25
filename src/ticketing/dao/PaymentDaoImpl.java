@@ -17,6 +17,10 @@ public class PaymentDaoImpl extends BaseDAO implements PaymentDao {
     ResultSet rs = null;
     Connection dbConn = getConnection();
 
+    /**
+     *
+     * @return
+     */
     @Override
     public String loadInvoice() {
         String next = "";
@@ -47,6 +51,11 @@ public class PaymentDaoImpl extends BaseDAO implements PaymentDao {
         return next;
     }
 
+    /**
+     *
+     * @param smartID
+     * @return
+     */
     @Override
     public int checkValidSmartCard(String smartID) {
 
@@ -70,6 +79,11 @@ public class PaymentDaoImpl extends BaseDAO implements PaymentDao {
         }
     }
 
+    /**
+     *
+     * @param pay
+     * @return
+     */
     @Override
     public int addPayment(Payment pay) {
         try {
@@ -103,6 +117,12 @@ public class PaymentDaoImpl extends BaseDAO implements PaymentDao {
         return -1;
     }
 
+    /**
+     *
+     * @param smartID
+     * @param recharge_amount
+     * @return
+     */
     @Override
     public int updateAccount(String smartID, double recharge_amount) {
 
@@ -154,6 +174,11 @@ public class PaymentDaoImpl extends BaseDAO implements PaymentDao {
 
     }
 
+    /**
+     *
+     * @param smartID
+     * @return
+     */
     @Override
     public String fillPassenger(String smartID) {
 
